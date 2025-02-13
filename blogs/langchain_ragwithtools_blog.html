@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using Arxiv and Wikipedia with LangChain for Research</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #E0E0E0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #00bcd4;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .hero {
+            background-color: #1E1E1E;
+            padding: 40px;
+            text-align: center;
+            border-bottom: 4px solid #00bcd4;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+        .code {
+            background-color: #2d2d2d;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: "Courier New", monospace;
+            color: #00ff7f;
+        }
+        a {
+            color: #00bcd4;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #1E1E1E;
+            border-top: 2px solid #00bcd4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <h1>Using Arxiv and Wikipedia with LangChain for Research</h1>
+        <p>Learn how to leverage LangChain tools to integrate Wikipedia and Arxiv for AI research and information retrieval.</p>
+    </div>
+
+    <div class="container">
+        <h2>📚 Setting Up Research Tools</h2>
+        <p>We can use **LangChain's built-in tools** to query **Wikipedia** and **Arxiv** for research purposes.</p>
+        <div class="code"><pre><code>from langchain_community.tools import ArxivQueryRun, WikipediaQueryRun
+from langchain_community.utilities import WikipediaAPIWrapper, ArxivAPIWrapper
+
+# Initialize Wikipedia tool
+api_wrapper_wiki = WikipediaAPIWrapper(top_k_results=1, doc_content_chars_max=250)
+wiki = WikipediaQueryRun(api_wrapper=api_wrapper_wiki)
+
+# Initialize Arxiv tool
+api_wrapper_arxiv = ArxivAPIWrapper(top_k_results=1, doc_content_chars_max=250)
+arxiv = ArxivQueryRun(api_wrapper=api_wrapper_arxiv)
+print(arxiv.name)
+
+# List of tools
+tools = [wiki, arxiv]</code></pre></div>
+
+        <h2>🔍 Custom RAG-Based Search Tool</h2>
+        <p>We can create a **Retrieval-Augmented Generation (RAG) tool** for more effective AI-driven search.</p>
+        <div class="code"><pre><code>from langchain_community.document_loaders import WebBaseLoader
+from langchain_community.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+# Load documents from LangSmith documentation
+loader = WebBaseLoader("https://docs.smith.langchain.com/")
+docs = loader.load()
+
+# Split text into chunks
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+documents = text_splitter.split_documents(docs)
+
+# Create vector database
+vectordb = FAISS.from_documents(documents, OpenAIEmbeddings())
+retriever = vectordb.as_retriever()</code></pre></div>
+
+        <h2>🔗 Creating a Retriever Tool</h2>
+        <div class="code"><pre><code>from langchain.tools.retriever import create_retriever_tool
+retriever_tool = create_retriever_tool(retriever, "langsmith-search", "Search any information about Langsmith")
+tools.append(retriever_tool)</code></pre></div>
+
+        <h2>🤖 Running AI Models with Agents</h2>
+        <p>We can integrate **LangChain Agents** with **OpenAI** or **Groq AI** to interact with these tools.</p>
+        <div class="code"><pre><code>from langchain_groq import ChatGroq
+from langchain.chat_models import ChatOpenAI
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+groq_api_key = os.getenv("GROQ_API_KEY")
+openai_api_key = os.getenv("OPENAI_API_KEY")
+
+# Initialize LLM
+llm = ChatOpenAI(openai_api_key=openai_api_key, model_name="gpt-3.5-turbo")</code></pre></div>
+
+        <h2>🛠️ Setting Up Agents</h2>
+        <div class="code"><pre><code>from langchain import hub
+from langchain.agents import create_openai_tools_agent, AgentExecutor
+
+# Load OpenAI functions agent template
+prompt = hub.pull("hwchase17/openai-functions-agent")
+
+# Create an agent
+agent = create_openai_tools_agent(llm, tools, prompt)
+
+# Execute the agent
+agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)</code></pre></div>
+
+        <h2>🚀 Running Queries</h2>
+        <p>We can now **invoke queries** using our AI-powered agent.</p>
+        <div class="code"><pre><code>agent_executor.invoke({"input": "Tell me about Artificial Intelligence"})
+agent_executor.invoke({"input": "What is machine learning?"})
+agent_executor.invoke({"input": "What's the paper 1706.03762 about?"})</code></pre></div>
+
+        <h2>🎯 Conclusion</h2>
+        <p>By integrating **Wikipedia, Arxiv, and LangChain's vector search**, we enhance AI's ability to retrieve **accurate, context-aware responses**. This method is useful for research assistants, academic tools, and AI-driven Q&A systems.</p>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 | Written by decodeai.ca 🚀</p>
+    </div>
+
+</body>
+</html>
