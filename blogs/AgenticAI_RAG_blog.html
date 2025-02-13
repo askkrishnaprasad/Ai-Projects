@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building a Retrieval-Augmented Generation (RAG) System with LangChain</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #E0E0E0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #00bcd4;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .hero {
+            background-color: #1E1E1E;
+            padding: 40px;
+            text-align: center;
+            border-bottom: 4px solid #00bcd4;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+        .code {
+            background-color: #2d2d2d;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: "Courier New", monospace;
+        }
+        .code code {
+            color: #00ff7f;
+        }
+        a {
+            color: #00bcd4;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #1E1E1E;
+            border-top: 2px solid #00bcd4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <h1>Building a Retrieval-Augmented Generation (RAG) System with LangChain</h1>
+        <p>Enhancing LLM responses using document retrieval and generative AI.</p>
+    </div>
+
+    <div class="container">
+        <h2>📌 Introduction</h2>
+        <p>Retrieval-Augmented Generation (RAG) improves AI-generated responses by incorporating external documents during inference. In this blog, we will build a simple RAG system using **LangChain** and **OpenAI** models.</p>
+
+        <h2>🛠️ Pre-requisites</h2>
+        <p>Install the necessary dependencies:</p>
+        <div class="code"><code>pip install langchain langchain-community langchain-openai faiss-cpu</code></div>
+
+        <p>Store API keys in a <code>.env</code> file for security.</p>
+
+        <h2>🔑 Setting Up Environment Variables</h2>
+        <div class="code"><code>
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGCHAIN_PROJECT")
+        </code></div>
+
+        <h2>🤖 Setting Up the LLM</h2>
+        <div class="code"><code>
+from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(model="o1-mini")
+print(llm)
+        </code></div>
+
+        <h2>💬 Creating a Chat Prompt</h2>
+        <div class="code"><code>
+from langchain_core.prompts import ChatPromptTemplate
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system", "You are an expert AI Engineer. Provide an answer based on the question."),
+    ("user", "{input}")
+])
+        </code></div>
+
+        <h2>📄 Implementing RAG</h2>
+        <div class="code"><code>
+from langchain_community.document_loaders import WebBaseLoader
+
+loader = WebBaseLoader("https://python.langchain.com/docs/tutorials/llm_chain/")
+document = loader.load()
+        </code></div>
+
+        <h2>📌 Splitting Documents</h2>
+        <div class="code"><code>
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+documents = text_splitter.split_documents(document)
+        </code></div>
+
+        <h2>📌 Creating a Vector Store</h2>
+        <div class="code"><code>
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
+
+embeddings = OpenAIEmbeddings()
+vectorstore = FAISS.from_documents(documents, embeddings)
+        </code></div>
+
+        <h2>🔍 Implementing a Retriever</h2>
+        <div class="code"><code>
+retriever = vectorstore.as_retriever()
+        </code></div>
+
+        <h2>🔗 Creating the Retrieval Chain</h2>
+        <div class="code"><code>
+from langchain.chains import create_retrieval_chain
+
+retrieval_chain = create_retrieval_chain(retriever, chain)
+        </code></div>
+
+        <h2>🚀 Running the RAG Pipeline</h2>
+        <div class="code"><code>
+result = retrieval_chain.invoke({"input": "Note that ChatModels receive message objects as input"})
+print(result['answer'])
+        </code></div>
+
+        <h2>🎯 Conclusion</h2>
+        <p>This RAG system enhances LLMs by integrating document retrieval with generative AI. Applications include AI search engines, customer support, and research assistants.</p>
+
+        <p>🔗 Learn more at <a href="https://python.langchain.com">LangChain Documentation</a></p>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 | Written by decodeai.ca 🚀</p>
+    </div>
+
+</body>
+</html>
