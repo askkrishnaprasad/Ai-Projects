@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ollama: Run AI Models Locally</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #E0E0E0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #00bcd4;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .hero {
+            background-color: #1E1E1E;
+            padding: 40px;
+            text-align: center;
+            border-bottom: 4px solid #00bcd4;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+        .code {
+            background-color: #2d2d2d;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: "Courier New", monospace;
+        }
+        .code code {
+            color: #00ff7f;
+        }
+        a {
+            color: #00bcd4;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #1E1E1E;
+            border-top: 2px solid #00bcd4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <h1>Ollama: Run AI Models Locally with Ease</h1>
+        <p>Run large language models like LLaMA, Mistral, and Gemma on your local machine without cloud dependencies.</p>
+    </div>
+
+    <div class="container">
+        <h2>🚀 What is Ollama?</h2>
+        <p>Ollama is an open-source framework that allows you to run AI-powered language models on your local machine with ease.</p>
+
+        <h2>💡 Why Use Ollama?</h2>
+        <ul>
+            <li>✅ Run AI models <strong>offline</strong> (no cloud needed)</li>
+            <li>✅ Improved <strong>privacy</strong> and <strong>security</strong></li>
+            <li>✅ Works with powerful <strong>open-source models</strong> like Mistral & LLaMA</li>
+            <li>✅ Easy installation and usage</li>
+        </ul>
+
+        <h2>🛠️ Installation Steps</h2>
+        
+        <h3>For macOS & Linux:</h3>
+        <div class="code"><code>curl -fsSL https://ollama.ai/install.sh | sh</code></div>
+
+        <h3>For Windows:</h3>
+        <p>Download and install from <a href="https://ollama.ai">Ollama's official website</a>.</p>
+
+        <h2>💻 Running a Model</h2>
+        <p>Once installed, you can run AI models with a single command.</p>
+
+        <h3>Start Chatting with Mistral:</h3>
+        <div class="code"><code>ollama run mistral</code></div>
+
+        <h3>Run a One-Time Query:</h3>
+        <div class="code"><code>ollama run mistral "What is Ollama?"</code></div>
+
+        <h3>List Installed Models:</h3>
+        <div class="code"><code>ollama list</code></div>
+
+        <h2>📝 Using Ollama in Python</h2>
+        <p>Want to integrate Ollama into a Python project? Use its API:</p>
+        <div class="code"><code>
+          import requests
+            response = requests.post(
+              "http://localhost:11434/api/generate",
+                json={"model": "mistral", "prompt": "Tell me a fun fact about space!"}
+            )
+          print(response.json()["response"])
+        </code></div>
+
+        <h2>🎯 Conclusion</h2>
+        <p>Ollama makes running AI models locally **simple, private, and efficient**. Whether you're building an AI chatbot or an offline assistant, it's a powerful tool to explore.</p>
+
+        <p>🔗 Learn more at <a href="https://ollama.ai">Ollama.ai</a></p>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 | Written by decodeai.ca</p>
+    </div>
+
+</body>
+</html>
