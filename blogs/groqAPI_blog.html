@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploring Groq: A High-Performance AI API with a Free Tier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #E0E0E0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: #00bcd4;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .hero {
+            background-color: #1E1E1E;
+            padding: 40px;
+            text-align: center;
+            border-bottom: 4px solid #00bcd4;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+        .code {
+            background-color: #2d2d2d;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: "Courier New", monospace;
+            color: #00ff7f;
+        }
+        a {
+            color: #00bcd4;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #1E1E1E;
+            border-top: 2px solid #00bcd4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <h1>Exploring Groq: A High-Performance AI API with a Free Tier</h1>
+        <p>Ultra-fast AI inference for developers using models like Llama 3 and Mixtral.</p>
+    </div>
+
+    <div class="container">
+        <h2>🚀 Introduction to Groq</h2>
+        <p>Groq is an AI inference platform optimized for speed and efficiency, designed to run large models like **Llama 3** and **Mixtral** with minimal latency.</p>
+
+        <h2>🆓 What You Get with Groq’s Free Tier</h2>
+        <ul>
+            <li>✅ **Free API Access** – No credit card required.</li>
+            <li>✅ **Community Support** – Forums and documentation.</li>
+            <li>✅ **Rate Limits:**
+                <ul>
+                    <li>📌 30 requests per minute (RPM)</li>
+                    <li>📌 1,000 requests per day (RPD)</li>
+                    <li>📌 6,000 tokens per minute (TPM)</li>
+                    <li>📌 100,000 tokens per day (TPD)</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>📡 Making a Simple Request to Groq API</h2>
+        <h3>Step 1: Get Your Free API Key</h3>
+        <ol>
+            <li>Sign up at <a href="https://console.groq.com">console.groq.com</a></li>
+            <li>Navigate to the API section and generate a **free API key**.</li>
+        </ol>
+
+        <h3>Step 2: Install Dependencies</h3>
+        <div class="code"><pre><code>pip install requests</code></pre></div>
+
+        <h3>Step 3: Send a Request to Groq API</h3>
+        <div class="code"><pre><code>import requests
+
+# Replace with your actual API key from Groq
+API_KEY = "your_groq_api_key"
+
+# Define the API endpoint
+API_URL = "https://api.groq.com/v1/chat/completions"
+
+# Define the request payload
+headers = {
+    "Authorization": f"Bearer {API_KEY}",
+    "Content-Type": "application/json"
+}
+
+data = {
+    "model": "llama-3.3-70b-versatile",  # Example model
+    "messages": [
+        {"role": "system", "content": "You are a helpful AI assistant."},
+        {"role": "user", "content": "What is Groq and how does it work?"}
+    ],
+    "max_tokens": 100
+}
+
+# Make the request
+response = requests.post(API_URL, json=data, headers=headers)
+
+# Print the response
+print(response.json())</code></pre></div>
+
+        <h2>🎯 Conclusion</h2>
+        <p>Groq’s Free Tier provides an excellent way to explore **high-speed AI inference** at no cost. By leveraging **Llama 3** or **Mixtral**, developers can build AI-powered applications with **low latency and high efficiency**.</p>
+
+        <p>For more power, consider upgrading to **Groq’s Developer or Enterprise plans**.</p>
+
+        <p>🚀 Would you like to see more use cases, such as **chatbots or AI-powered search with Groq**? Let me know!</p>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 | Written by decodeai.ca 🚀</p>
+    </div>
+
+</body>
+</html>
