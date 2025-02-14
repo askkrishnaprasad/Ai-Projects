@@ -167,11 +167,11 @@
             <div class="code">
                 <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                 <pre><code class="language-python" id="code-block">import requests
-                response = requests.post(
-                "http://localhost:11434/api/generate",
-                 json={"model": "mistral", "prompt": "Tell me a fun fact about space!"}
-                )
-                print(response.json()["response"])</code></pre>
+response = requests.post(
+"http://localhost:11434/api/generate",
+json={"model": "mistral", "prompt": "Tell me a fun fact about space!"}
+)
+print(response.json()["response"])</code></pre>
             </div>
             <div style="margin-top: 60px;"></div>
 
