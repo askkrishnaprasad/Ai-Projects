@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building a RAG System with LangChain</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/monokai.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+            scroll-behavior: smooth;
+        }
+        .hero {
+            background: linear-gradient(135deg, #333, #1a1a1a);
+            padding: 50px 20px;
+            text-align: center;
+            border-bottom: 4px solid #444;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .hero p {
+            font-size: 1.1rem;
+        }
+        .code {
+            background-color: #2c2f33;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #444;
+            color: #f5f5f5;
+            border: none;
+            padding: 3px 7px;
+            font-size: 10px; 
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .copy-btn:hover {
+            background-color: #666;
+        }
+        .container {
+            max-width: 1000px;
+            padding: 50px 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            background-color: #1a1a1a;
+        }
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            background-color: #222;
+            border-top: 2px solid #444;
+            color: #f5f5f5;
+            box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .navbar {
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        .content {
+            padding-top: 100px;
+        }
+        h2, h3, h4 {
+            color: #bbb;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #bbb;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #ddd;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark px-3">
+        <a class="navbar-brand" href="#">
+            <img src="/images/decodeai_logo.png" alt="Company Logo" width="130" height="30">
+        </a>
+        <a href="/index.html" class="btn btn-outline-light">Home</a>
+    </nav>
+
+    <div class="content">
+        <div class="hero">
+            <h1>Building a RAG System with LangChain</h1>
+            <p class="lead">Enhancing LLM responses using document retrieval and generative AI.</p>
+        </div>
+
+        <div class="container">
+            <h2>Introduction</h2>
+            <p>Retrieval-Augmented Generation (RAG) improves AI-generated responses by incorporating external documents during inference. In this blog, we will build a simple RAG system using **LangChain** and **OpenAI** models.</p>
+            <div style="margin-top: 60px;"></div>
+
+            <h2>Pre-requisites</h2>
+            <p>Install the necessary dependencies:</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">pip install langchain langchain-community langchain-openai faiss-cpu</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+            <p>Store API keys in a .env file for security.</p>
+
+            <h2>Setting Up Environment Variables</h2>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">import os
+from dotenv import load_dotenv
+load_dotenv()
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
+os.environ["LANGCHAIN_TRACING_V2"] = "true"
+os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGCHAIN_PROJECT")</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>Setting Up the LLM</h2>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">from langchain_openai import ChatOpenAI
+llm = ChatOpenAI(model="o1-mini")
+print(llm)</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>Creating a Chat Prompt</h2>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">from langchain_core.prompts import ChatPromptTemplate
+prompt = ChatPromptTemplate.from_messages([
+("system", "You are an expert AI Engineer. Provide an answer based on the question."),("user", "{input}")])</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>Implementing RAG</h2>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">from langchain_community.document_loaders import WebBaseLoader
+loader = WebBaseLoader("https://python.langchain.com/docs/tutorials/llm_chain/")
+document = loader.load()</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>Splitting Documents</h2>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">from langchain_text_splitters import RecursiveCharacterTextSplitter
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+documents = text_splitter.split_documents(document)</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>Creating a Vector Store</h2>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">from langchain_openai import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
+embeddings = OpenAIEmbeddings()
+vectorstore = FAISS.from_documents(documents, embeddings)</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>Implementing a Retriever</h2>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">retriever = vectorstore.as_retriever()</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>Creating the Retrieval Chain</h2>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">from langchain.chains import create_retrieval_chain
+retrieval_chain = create_retrieval_chain(retriever, chain)</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>Running the RAG Pipeline</h2>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">result = retrieval_chain.invoke({"input": "Note that ChatModels receive message objects as input"})
+print(result['answer'])</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>Conclusion</h2>
+            <p>This RAG system enhances LLMs by integrating document retrieval with generative AI. Applications include AI search engines, customer support, and research assistants.</p>
+            <p>Learn more at <a href="https://python.langchain.com">LangChain Documentation</a></p>
+        </div>
+    </div>
+    <div class="footer">
+        <p>© 2025 | Written by decodeai.ca</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function copyCode(button) {
+    // Find the nearest <code> element inside the same .code div
+    const codeBlock = button.nextElementSibling.querySelector("code");
+    if (codeBlock) {
+        const textToCopy = codeBlock.innerText;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            button.textContent = "✨";
+            setTimeout(() => { button.textContent = "⧉"; }, 2000);
+        }).catch(err => console.error("Failed to copy text:", err));
+    }
+}
+    </script>
+</body>
+</html>
