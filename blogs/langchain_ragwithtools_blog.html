@@ -3,148 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Using Arxiv and Wikipedia with LangChain for Research</title>
+    <title>Using Tools with LangChain for RAG</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/monokai.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #121212;
-            color: #E0E0E0;
+            color: #f5f5f5;
             margin: 0;
             padding: 0;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            padding: 20px;
-        }
-        h1, h2, h3 {
-            color: #00bcd4;
-        }
-        p {
-            line-height: 1.6;
+            line-height: 1.7;
+            scroll-behavior: smooth;
         }
         .hero {
-            background-color: #1E1E1E;
-            padding: 40px;
+            background: linear-gradient(135deg, #333, #1a1a1a);
+            padding: 50px 20px;
             text-align: center;
-            border-bottom: 4px solid #00bcd4;
+            border-bottom: 4px solid #444;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
         }
         .hero h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .hero p {
+            font-size: 1.1rem;
         }
         .code {
-            background-color: #2d2d2d;
-            padding: 10px;
-            border-radius: 5px;
+            background-color: #2c2f33;
+            padding: 20px;
+            border-radius: 10px;
             overflow-x: auto;
-            font-family: "Courier New", monospace;
-            color: #00ff7f;
+            position: relative;
         }
-        a {
-            color: #00bcd4;
-            text-decoration: none;
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #444;
+            color: #f5f5f5;
+            border: none;
+            padding: 3px 7px;
+            font-size: 10px; 
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
         }
-        a:hover {
-            text-decoration: underline;
+        .copy-btn:hover {
+            background-color: #666;
+        }
+        .container {
+            max-width: 1000px;
+            padding: 50px 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            background-color: #1a1a1a;
         }
         .footer {
             text-align: center;
-            padding: 10px;
-            margin-top: 20px;
-            background-color: #1E1E1E;
-            border-top: 2px solid #00bcd4;
+            padding: 30px;
+            margin-top: 40px;
+            background-color: #222;
+            border-top: 2px solid #444;
+            color: #f5f5f5;
+            box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .navbar {
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        .content {
+            padding-top: 100px;
+        }
+        h2, h3, h4 {
+            color: #bbb;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #bbb;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #ddd;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
-    <div class="hero">
-        <h1>Using Arxiv and Wikipedia with LangChain for Research</h1>
-        <p>Learn how to leverage LangChain tools to integrate Wikipedia and Arxiv for AI research and information retrieval.</p>
-    </div>
+    <nav class="navbar navbar-dark px-3">
+        <a class="navbar-brand" href="#">
+            <img src="/images/decodeai_logo.png" alt="Company Logo" width="130" height="30">
+        </a>
+        <a href="/index.html" class="btn btn-outline-light">Home</a>
+    </nav>
 
-    <div class="container">
-        <h2>📚 Setting Up Research Tools</h2>
-        <p>We can use **LangChain's built-in tools** to query **Wikipedia** and **Arxiv** for research purposes.</p>
-        <div class="code"><pre><code>from langchain_community.tools import ArxivQueryRun, WikipediaQueryRun
+    <div class="content">
+        <div class="hero">
+            <h1>Using Tools with LangChain for RAG</h1>
+            <p class="lead">Learn how to leverage LangChain tools to integrate Wikipedia and Arxiv for AI research and information retrieval</p>
+        </div>
+
+        <div class="container">
+            <h2>Setting Up Research Tools</h2>
+            <p>We can use LangChain's built-in tools to query Wikipedia and Arxiv for research purposes.</p>    
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">from langchain_community.tools import ArxivQueryRun, WikipediaQueryRun
 from langchain_community.utilities import WikipediaAPIWrapper, ArxivAPIWrapper
-
+                    
 # Initialize Wikipedia tool
 api_wrapper_wiki = WikipediaAPIWrapper(top_k_results=1, doc_content_chars_max=250)
 wiki = WikipediaQueryRun(api_wrapper=api_wrapper_wiki)
-
+                    
 # Initialize Arxiv tool
 api_wrapper_arxiv = ArxivAPIWrapper(top_k_results=1, doc_content_chars_max=250)
 arxiv = ArxivQueryRun(api_wrapper=api_wrapper_arxiv)
 print(arxiv.name)
-
+                    
 # List of tools
 tools = [wiki, arxiv]</code></pre></div>
+            <div style="margin-top: 40px;"></div>
 
-        <h2>🔍 Custom RAG-Based Search Tool</h2>
-        <p>We can create a **Retrieval-Augmented Generation (RAG) tool** for more effective AI-driven search.</p>
-        <div class="code"><pre><code>from langchain_community.document_loaders import WebBaseLoader
+            <h2>Custom RAG-Based Search Tool</h2>
+            <p>We can create a Retrieval-Augmented Generation (RAG) tool for more effective AI-driven search.</p>    
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-
+                    
 # Load documents from LangSmith documentation
 loader = WebBaseLoader("https://docs.smith.langchain.com/")
 docs = loader.load()
-
+                    
 # Split text into chunks
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 documents = text_splitter.split_documents(docs)
-
+                    
 # Create vector database
 vectordb = FAISS.from_documents(documents, OpenAIEmbeddings())
 retriever = vectordb.as_retriever()</code></pre></div>
+            <div style="margin-top: 40px;"></div>
 
-        <h2>🔗 Creating a Retriever Tool</h2>
-        <div class="code"><pre><code>from langchain.tools.retriever import create_retriever_tool
+            <h2>Creating a Retriever Tool</h2>    
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">from langchain.tools.retriever import create_retriever_tool
 retriever_tool = create_retriever_tool(retriever, "langsmith-search", "Search any information about Langsmith")
 tools.append(retriever_tool)</code></pre></div>
+            <div style="margin-top: 40px;"></div>
 
-        <h2>🤖 Running AI Models with Agents</h2>
-        <p>We can integrate **LangChain Agents** with **OpenAI** or **Groq AI** to interact with these tools.</p>
-        <div class="code"><pre><code>from langchain_groq import ChatGroq
+            <h2>Running AI Models with Agents</h2>
+            <p>We can integrate LangChain Agents with OpenAI or Groq AI to interact with these tools.</p>   
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">from langchain_groq import ChatGroq
 from langchain.chat_models import ChatOpenAI
 from dotenv import load_dotenv
 import os
-
+                    
 load_dotenv()
 groq_api_key = os.getenv("GROQ_API_KEY")
 openai_api_key = os.getenv("OPENAI_API_KEY")
-
+                    
 # Initialize LLM
 llm = ChatOpenAI(openai_api_key=openai_api_key, model_name="gpt-3.5-turbo")</code></pre></div>
+            <div style="margin-top: 40px;"></div>
 
-        <h2>🛠️ Setting Up Agents</h2>
-        <div class="code"><pre><code>from langchain import hub
+            <h2>Setting Up Agents</h2>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">from langchain import hub
 from langchain.agents import create_openai_tools_agent, AgentExecutor
-
+                    
 # Load OpenAI functions agent template
 prompt = hub.pull("hwchase17/openai-functions-agent")
-
+                    
 # Create an agent
 agent = create_openai_tools_agent(llm, tools, prompt)
-
+                    
 # Execute the agent
 agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)</code></pre></div>
+            <div style="margin-top: 40px;"></div>
 
-        <h2>🚀 Running Queries</h2>
-        <p>We can now **invoke queries** using our AI-powered agent.</p>
-        <div class="code"><pre><code>agent_executor.invoke({"input": "Tell me about Artificial Intelligence"})
+            <h2>Running Queries</h2>
+            <p>We can now invoke queries using our AI-powered agent.</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">agent_executor.invoke({"input": "Tell me about Artificial Intelligence"})
 agent_executor.invoke({"input": "What is machine learning?"})
 agent_executor.invoke({"input": "What's the paper 1706.03762 about?"})</code></pre></div>
+            <div style="margin-top: 40px;"></div>
 
-        <h2>🎯 Conclusion</h2>
-        <p>By integrating **Wikipedia, Arxiv, and LangChain's vector search**, we enhance AI's ability to retrieve **accurate, context-aware responses**. This method is useful for research assistants, academic tools, and AI-driven Q&A systems.</p>
+            <h2>Conclusion</h2>
+            <p2>By integrating Wikipedia, Arxiv, and LangChain's vector search, we enhance AI's ability to retrieve **accurate, context-aware responses. This method is useful for research assistants, academic tools, and AI-driven Q&A systems.</p>
     </div>
-
     <div class="footer">
-        <p>© 2025 | Written by decodeai.ca 🚀</p>
+        <p>© 2025 | Written by decodeai.ca</p>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function copyCode(button) {
+    // Find the nearest <code> element inside the same .code div
+    const codeBlock = button.nextElementSibling.querySelector("code");
+    if (codeBlock) {
+        const textToCopy = codeBlock.innerText;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            button.textContent = "✨";
+            setTimeout(() => { button.textContent = "⧉"; }, 2000);
+        }).catch(err => console.error("Failed to copy text:", err));
+    }
+}
+    </script>
 </body>
 </html>
