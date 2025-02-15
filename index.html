@@ -3,82 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>decodeai</title>
+    <title>decodeAI - Agentic AI Blog</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
+            font-family: 'Inter', sans-serif;
             background-color: #121212;
             color: #ffffff;
         }
-        h1 {
-            color: #ffffff;
-            font-size: 2.5em;
-            margin-bottom: 10px;
+
+        /* Navbar */
+        .navbar {
+            background-color: #1e1e1e;
+            padding: 10px 20px;
         }
-        p {
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #1a1a1a, #222);
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+        }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+        .hero p {
+            font-size: 1.2rem;
             color: #bbbbbb;
-            font-size: 1.2em;
+            max-width: 750px;
+            margin: 15px auto;
+            line-height: 1.6;
         }
-        .links {
-            margin-top: 20px;
+
+        /* Search Bar */
+        .search-bar {
+            max-width: 500px;
+            margin: 30px auto;
+        }
+        .search-bar input {
             background: #1e1e1e;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 1px solid #a855f7;
+        }
+        .search-bar input::placeholder {
+            color: #bbb;
+        }
+
+        /* Blog Tiles */
+        .tiles {
+            margin-top: 40px;
+        }
+        .tile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            color: #ddd;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+        }
+        .tile:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
+            background: #292929;
+        }
+        .tile h5 {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        .tile p {
+            font-size: 1rem;
+            color: #bbb;
+        }
+
+        /* Purple Gradient Button */
+        .tile a {
+            margin-top: 10px;
             display: inline-block;
-        }
-        .links h2 {
-            color: #dddddd;
-            margin-bottom: 15px;
-        }
-        .links a {
-            display: block;
-            margin: 10px 0;
-            font-size: 18px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #a855f7, #ec4899);
+            color: #fff;
             text-decoration: none;
-            color: #4da6ff;
-            padding: 8px 15px;
-            border-radius: 5px;
-            background: #333;
+            transition: all 0.3s ease-in-out;
+            font-weight: bold;
+            border: none;
+            text-align: center;
+        }
+        .tile a:hover {
+            background: linear-gradient(90deg, #9333ea, #db2777);
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 60px;
+            padding: 20px;
+            text-align: center;
+            background: #1e1e1e;
+            color: #aaaaaa;
+        }
+        .footer a {
+            color: #a855f7;
+            text-decoration: none;
+            margin: 0 10px;
             transition: 0.3s;
         }
-        .links a:hover {
+        .footer a:hover {
             text-decoration: underline;
-            background: #444;
-        }
-        .footer {
-            margin-top: 40px;
-            padding-top: 10px;
-            font-size: 0.9em;
-            color: #999999;
-        }
-        .footer::before {
-            content: "";
-            display: block;
-            width: 80%;
-            height: 1px;
-            background: #555;
-            margin: 20px auto;
+            color: #9333ea;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to decodeai</h1>
-    <p>Explore Real-life use cases and blog posts on Generative AI and Agentic AI.</p>
-    
-    <div class="links">
-        <h2>Read more about</h2>
-        <a href="blogs/agenticai_rag_blog.html">RAG with Langchain</a>
-        <a href="blogs/ollama_blog.html">Run open source LLMs locally</a>
-        <a href="blogs/groqAPI_blog.html">GROQ API: Connect to LLMs running in cloud</a>
-        <a href="blogs/langchain_ragwithtools_blog.html">RAG with Langchain and Tools</a>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <img src="/images/decodeai_logo.png" alt="Company Logo" width="130" height="30">
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <h1>Welcome to decodeAI</h1>
+        <p>Explore real-life use cases and blog posts on Generative AI and Agentic AI.</p>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="container search-bar">
+        <input type="text" id="searchInput" class="form-control form-control-lg" placeholder="Search blog posts..." onkeyup="searchBlogs()">
     </div>
-    
+
+    <!-- Blog Tiles -->
+    <div class="container tiles">
+        <div class="row g-4" id="blogList">
+            
+            <!-- Blog Tiles -->
+            <div class="col-md-6 col-lg-4 blog-tile" data-title="RAG with LangChain">
+                <div class="tile">
+                    <div>
+                        <h5>RAG with LangChain</h5>
+                        <p>Learn how to implement Retrieval-Augmented Generation using LangChain.</p>
+                        <a href="blogs/agenticai_rag_blog.html">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 blog-tile" data-title="Run Open Source LLMs Locally">
+                <div class="tile">
+                    <div>
+                        <h5>Run Open Source LLMs Locally</h5>
+                        <p>Set up Ollama to run large language models on your local machine.</p>
+                        <a href="blogs/ollama_blog.html">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 blog-tile" data-title="GROQ API Cloud LLMs">
+                <div class="tile">
+                    <div>
+                        <h5>GROQ API: Cloud LLMs</h5>
+                        <p>Discover how to connect to LLMs running in the cloud with GROQ API.</p>
+                        <a href="blogs/groqAPI_blog.html">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4 blog-tile" data-title="RAG with LangChain & Tools">
+                <div class="tile">
+                    <div>
+                        <h5>RAG with LangChain & Tools</h5>
+                        <p>Learn how to enhance RAG pipelines using LangChain tools.</p>
+                        <a href="blogs/langchain_ragwithtools_blog.html">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
     <div class="footer">
-        <p>Authors: Krishna Prasad and Vyshakh</p>
+        <p>Authors: <strong>Krishna Prasad & Vyshakh</strong></p>
     </div>
+
+    <script>
+        function searchBlogs() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let blogTiles = document.querySelectorAll(".blog-tile");
+
+            blogTiles.forEach(tile => {
+                let title = tile.getAttribute("data-title").toLowerCase();
+                if (title.includes(input)) {
+                    tile.style.display = "block";
+                } else {
+                    tile.style.display = "none";
+                }
+            });
+        }
+    </script>
+
 </body>
 </html>
