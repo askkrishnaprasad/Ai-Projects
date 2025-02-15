@@ -4,134 +4,204 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exploring Groq: A High-Performance AI API with a Free Tier</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/monokai.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #121212;
-            color: #E0E0E0;
+            color: #f5f5f5;
             margin: 0;
             padding: 0;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            padding: 20px;
-        }
-        h1, h2, h3 {
-            color: #00bcd4;
-        }
-        p {
-            line-height: 1.6;
+            line-height: 1.7;
+            scroll-behavior: smooth;
         }
         .hero {
-            background-color: #1E1E1E;
-            padding: 40px;
+            background: linear-gradient(135deg, #333, #1a1a1a);
+            padding: 50px 20px;
             text-align: center;
-            border-bottom: 4px solid #00bcd4;
+            border-bottom: 4px solid #444;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
         }
         .hero h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .hero p {
+            font-size: 1.1rem;
         }
         .code {
-            background-color: #2d2d2d;
-            padding: 10px;
-            border-radius: 5px;
+            background-color: #2c2f33;
+            padding: 20px;
+            border-radius: 10px;
             overflow-x: auto;
-            font-family: "Courier New", monospace;
-            color: #00ff7f;
+            position: relative;
         }
-        a {
-            color: #00bcd4;
-            text-decoration: none;
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #444;
+            color: #f5f5f5;
+            border: none;
+            padding: 3px 7px;
+            font-size: 10px; 
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
         }
-        a:hover {
-            text-decoration: underline;
+        .copy-btn:hover {
+            background-color: #666;
+        }
+        .container {
+            max-width: 1000px;
+            padding: 50px 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            background-color: #1a1a1a;
         }
         .footer {
             text-align: center;
-            padding: 10px;
-            margin-top: 20px;
-            background-color: #1E1E1E;
-            border-top: 2px solid #00bcd4;
+            padding: 30px;
+            margin-top: 40px;
+            background-color: #222;
+            border-top: 2px solid #444;
+            color: #f5f5f5;
+            box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .navbar {
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        .content {
+            padding-top: 100px;
+        }
+        h2, h3, h4 {
+            color: #bbb;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #bbb;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #ddd;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
-    <div class="hero">
-        <h1>Exploring Groq: A High-Performance AI API with a Free Tier</h1>
-        <p>Ultra-fast AI inference for developers using models like Llama 3 and Mixtral.</p>
-    </div>
+    <nav class="navbar navbar-dark px-3">
+        <a class="navbar-brand" href="#">
+            <img src="/images/decodeai_logo.png" alt="Company Logo" width="130" height="30">
+        </a>
+        <a href="/index.html" class="btn btn-outline-light">Home</a>
+    </nav>
 
-    <div class="container">
-        <h2>🚀 Introduction to Groq</h2>
-        <p>Groq is an AI inference platform optimized for speed and efficiency, designed to run large models like **Llama 3** and **Mixtral** with minimal latency.</p>
+    <div class="content">
+        <div class="hero">
+            <h1>Exploring Groq: A High-Performance AI API with a Free Tier</h1>
+            <p class="lead">Ultra-fast AI inference for developers using models like Llama 3 and Mixtral.</p>
+        </div>
 
-        <h2>🆓 What You Get with Groq’s Free Tier</h2>
-        <ul>
-            <li>✅ **Free API Access** – No credit card required.</li>
-            <li>✅ **Community Support** – Forums and documentation.</li>
-            <li>✅ **Rate Limits:**
+        <div class="container">
+            <p>Groq is an AI inference platform optimized for speed and efficiency, designed to run large models like Llama 3 and Mixtral with minimal latency.</p>
+            <div style="margin-top: 60px;"></div>
+
+            <h2>What You Get with Groq’s Free Tier</h2>
+            <ul>
+                <li><strong>Free API Access</strong>– No credit card required.</li>
+                <li><strong>Community Support</strong>– Forums and documentation.</li>
+                <li><strong>Rate Limits:</strong>
                 <ul>
-                    <li>📌 30 requests per minute (RPM)</li>
-                    <li>📌 1,000 requests per day (RPD)</li>
-                    <li>📌 6,000 tokens per minute (TPM)</li>
-                    <li>📌 100,000 tokens per day (TPD)</li>
+                    <li>30 requests per minute (RPM)</li>
+                    <li>1,000 requests per day (RPD)</li>
+                    <li>6,000 tokens per minute (TPM)</li>
+                    <li>100,000 tokens per day (TPD)</li>
                 </ul>
             </li>
-        </ul>
+            </ul>
+            <div style="margin-top: 60px;"></div>
 
-        <h2>📡 Making a Simple Request to Groq API</h2>
-        <h3>Step 1: Get Your Free API Key</h3>
-        <ol>
-            <li>Sign up at <a href="https://console.groq.com">console.groq.com</a></li>
-            <li>Navigate to the API section and generate a **free API key**.</li>
-        </ol>
+            <h2>Making a Simple Request to Groq API</h2>
+            <h3>Step 1: Get Your Free API Key</h3>
+            <ol>
+                <li>Sign up at <a href="https://console.groq.com">console.groq.com</a></li>
+                <li>Navigate to the API section and generate a free API key.</li>
+            </ol>
 
-        <h3>Step 2: Install Dependencies</h3>
-        <div class="code"><pre><code>pip install requests</code></pre></div>
+            <h3>Step 2: Install Dependencies</h3>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">pip install requests</code></pre></div>
+            <div style="margin-top: 40px;"></div>
 
-        <h3>Step 3: Send a Request to Groq API</h3>
-        <div class="code"><pre><code>import requests
+            <h3>Step 3: Send a Request to Groq API</h3>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉</button>
+                <pre><code class="language-python" id="code-block">import requests
 
 # Replace with your actual API key from Groq
 API_KEY = "your_groq_api_key"
-
+                    
 # Define the API endpoint
 API_URL = "https://api.groq.com/v1/chat/completions"
-
+                    
 # Define the request payload
 headers = {
     "Authorization": f"Bearer {API_KEY}",
     "Content-Type": "application/json"
 }
-
-data = {
+                    
+ data = {
     "model": "llama-3.3-70b-versatile",  # Example model
     "messages": [
-        {"role": "system", "content": "You are a helpful AI assistant."},
+        "role": "system", "content": "You are a helpful AI assistant."},
         {"role": "user", "content": "What is Groq and how does it work?"}
     ],
     "max_tokens": 100
 }
-
+                    
 # Make the request
 response = requests.post(API_URL, json=data, headers=headers)
-
+                    
 # Print the response
 print(response.json())</code></pre></div>
+            <div style="margin-top: 40px;"></div>
 
-        <h2>🎯 Conclusion</h2>
-        <p>Groq’s Free Tier provides an excellent way to explore **high-speed AI inference** at no cost. By leveraging **Llama 3** or **Mixtral**, developers can build AI-powered applications with **low latency and high efficiency**.</p>
-
-        <p>For more power, consider upgrading to **Groq’s Developer or Enterprise plans**.</p>
-
-        <p>🚀 Would you like to see more use cases, such as **chatbots or AI-powered search with Groq**? Let me know!</p>
+            <h2>Conclusion</h2>
+            <p>Groq’s Free Tier provides an excellent way to explore high-speed AI inference** at no cost. By leveraging Llama 3 or Mixtral, developers can build AI-powered applications with low latency and high efficiency.</p>
+            <p>For more power, consider upgrading to **Groq’s Developer or Enterprise plans.</p>
+        </div>
     </div>
-
     <div class="footer">
-        <p>© 2025 | Written by decodeai.ca 🚀</p>
+        <p>© 2025 | Written by decodeai.ca</p>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function copyCode(button) {
+    // Find the nearest <code> element inside the same .code div
+    const codeBlock = button.nextElementSibling.querySelector("code");
+    if (codeBlock) {
+        const textToCopy = codeBlock.innerText;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            button.textContent = "✨";
+            setTimeout(() => { button.textContent = "⧉"; }, 2000);
+        }).catch(err => console.error("Failed to copy text:", err));
+    }
+}
+    </script>
 </body>
 </html>
