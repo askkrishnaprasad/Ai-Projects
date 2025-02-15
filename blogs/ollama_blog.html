@@ -134,7 +134,7 @@
             <h2>Installation Steps</h2>
             <h3>For macOS & Linux:</h3>
             <div class="code">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <button class="copy-btn" onclick="copyCode(this)">📄</button>
                 <pre><code class="language-python" id="code-block">curl -fsSL https://ollama.ai/install.sh | sh</code></pre></div>
             <div style="margin-top: 40px;"></div>
 
@@ -146,26 +146,26 @@
 
             <h3>Start Chatting with Mistral:</h3>
             <div class="code">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <button class="copy-btn" onclick="copyCode(this)">📄</button>
                 <pre><code class="language-python" id="code-block">ollama run mistral</code></pre></div>
             <div style="margin-top: 40px;"></div>
 
             <h3>Run a One-Time Query:</h3>
             <div class="code">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <button class="copy-btn" onclick="copyCode(this)">📄</button>
                 <pre><code class="language-python" id="code-block">ollama run mistral "What is Ollama?"</code></pre></div>
             <div style="margin-top: 40px;"></div>
 
             <h3>List Installed Models:</h3>
             <div class="code">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <button class="copy-btn" onclick="copyCode(this)">📄</button>
                 <pre><code class="language-python" id="code-block">ollama list</code></pre></div>
             <div style="margin-top: 40px;"></div>
 
             <h2>Using Ollama in Python</h2>
             <p>Want to integrate Ollama into a Python project? Use its API:</p>
             <div class="code">
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <button class="copy-btn" onclick="copyCode(this)">📄</button>
                 <pre><code class="language-python" id="code-block">import requests
 response = requests.post("http://localhost:11434/api/generate",
 json={"model": "mistral", "prompt": "Tell me a fun fact about space!"})
@@ -190,8 +190,8 @@ print(response.json()["response"])</code></pre>
     if (codeBlock) {
         const textToCopy = codeBlock.innerText;
         navigator.clipboard.writeText(textToCopy).then(() => {
-            button.textContent = "Copied!";
-            setTimeout(() => { button.textContent = "Copy"; }, 2000);
+            button.textContent = "✅";
+            setTimeout(() => { button.textContent = "📄"; }, 2000);
         }).catch(err => console.error("Failed to copy text:", err));
     }
 }
