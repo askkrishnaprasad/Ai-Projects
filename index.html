@@ -32,37 +32,48 @@
             backdrop-filter: blur(5px);
         }
         /* Hero Section */
-.hero {
-    text-align: center;
-    padding: 120px 20px;
-    background: url('images/home_image.jpg') no-repeat center center;
-    background-size: cover;
-    position: relative;
-}
+        .hero {
+            text-align: center;
+            padding: 120px 20px;
+            background: url('images/home_image.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+        }
+        
+        /* Remove the overlay by commenting out or deleting this */
+        .hero::before {
+            /* content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(75, 0, 130, 0.6); */
+            /* If needed for other effects, keep border-radius */
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+        }
 
-/* Completely remove the overlay */
-.hero::before {
-    display: none;
-}
-
-/* Hero Content */
-.hero h1, .hero p {
-    position: relative;
-    z-index: 1;
-    color: #ffffff;
-    text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
-}
-.hero h1 {
-    font-size: 3rem;
-    font-weight: 700;
-}
-.hero p {
-    font-size: 1.2rem;
-    color: #bbbbbb;
-    max-width: 750px;
-    margin: 15px auto;
-    line-height: 1.6;
-}
+        /* Hero Content */
+        .hero h1, .hero p {
+            position: relative;
+            z-index: 1;
+            color: #ffffff;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
+        }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: #bbbbbb;
+            max-width: 750px;
+            margin: 15px auto;
+            line-height: 1.6;
+        }
         /* Search Bar */
         .search-bar {
             max-width: 500px;
