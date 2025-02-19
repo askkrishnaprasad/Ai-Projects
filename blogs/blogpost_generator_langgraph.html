@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post Generator Using LangGraph and LangChain</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/monokai.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+            scroll-behavior: smooth;
+        }
+        .hero {
+            background: linear-gradient(135deg, #333, #1a1a1a);
+            padding: 50px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .hero::after {
+            content: "";
+            display: block;
+            height: 4px;
+            width: 100%;
+            background: linear-gradient(90deg, #8a2be2, #ff00ff);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .hero p {
+            font-size: 1.1rem;
+        }
+        .code {
+            background-color: #2c2f33;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #444;
+            color: #f5f5f5;
+            border: none;
+            padding: 3px 7px;
+            font-size: 10px; 
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .copy-btn:hover {
+            background-color: #666;
+        }
+        .container {
+            max-width: 1000px;
+            padding: 50px 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            background-color: #1a1a1a;
+        }
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            background-color: #222;
+            border-top: 2px solid #444;
+            color: #f5f5f5;
+            box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .navbar {
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        .content {
+            padding-top: 100px;
+        }
+        h2, h3, h4 {
+            color: #bbb;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #bbb;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #ddd;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark px-3">
+        <a class="navbar-brand" href="#">
+            <img src="/images/decodeai_logo.png" alt="Company Logo" width="130" height="30">
+        </a>
+        <a href="/index.html" class="btn btn-outline-light">Home</a>
+    </nav>
+
+    <div class="content">
+        <div class="hero">
+            <h1>Blog Post Generator Using LangGraph and LangChain</h1>
+            <p class="lead">We will build a simple blog post generator using LangGraph, a powerful framework for structuring multi-step workflows in LangChain.</p>
+        </div>
+
+        <div class="container">
+            <p class="lead">In this tutorial, Our system will have two agents:</p>
+            <ul>
+                <li><strong>Title Generator Agent – </strong>Generates a blog post title based on a given topic.</li>
+                <li><strong>Content Generator Agent – </strong>Generates the blog post content based on the generated title.</li>
+            </ul>
+            <p class="lead">We will use OpenAI's GPT-4o model (or Groq LLM if needed) to generate the responses.</p>
+            <div style="margin-top: 60px;"></div>
+
+            <h2>Setting Up the Environment</h2>
+            <p class="lead">Before we begin, ensure you have the required dependencies installed:</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python" id="code-block">pip install langchain langchain_openai langgraph python-dotenv</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+                <p class="lead">Then, set up your API keys by creating a .env file:</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python" id="code-block">GROQ_API_KEY=your_groq_api_key
+OPENAI_API_KEY=your_openai_api_key</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <p class="lead">Now, let's import the required modules and load the environment variables.</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python" id="code-block">import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+
+from langchain_openai import ChatOpenAI
+llm = ChatOpenAI(model="gpt-4o")  # Using GPT-4o for better responses</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>Defining the Message State</h2>
+            <p class="lead">LangGraph uses a message-based state to pass data between nodes. We define a MessagesState dictionary that will hold a list of messages.</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python" id="code-block">from langgraph.graph import MessagesState
+from typing_extensions import TypedDict
+from langchain_core.messages import AnyMessage
+from typing import Annotated
+from langgraph.graph.message import add_messages
+                    
+class MessagesState(TypedDict):
+    messages: Annotated[list[AnyMessage], add_messages]</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>1. Title Generator Agent</h2>
+            <p class="lead">This agent takes the user-provided blog topic and generates a blog title.</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python" id="code-block">from langchain_core.messages import HumanMessage, SystemMessage
+
+# System message for Title Generator
+title_generator = SystemMessage(
+    content="You are a helpful assistant tasked with generating a Title for the Blog Heading that I provide."
+)
+                    
+def title_generator_agent(state: MessagesState):
+    return {"messages": [llm.invoke([title_generator] + state["messages"])]}</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>2. Blog Content Generator Agent</h2>
+            <p class="lead">This agent takes the generated blog title and creates blog content based on it.</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python" id="code-block"># System message for Blog Content Generator
+blog_generator = SystemMessage(
+    content="You are a helpful assistant tasked with generating Blog Content for the Blog Title."
+)
+                    
+def blog_generator_agent(state: MessagesState):
+    return {"messages": [llm.invoke([blog_generator] + state["messages"])]}</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>Building the Workflow with LangGraph</h2>
+            <p class="lead">Now, we use LangGraph to define the workflow:</p>
+            <ul>
+                <li>The process starts with the Title Generator.</li>
+                <li>The generated title is passed to the Blog Generator.</li>
+                <li>The blog generator creates content based on the title.</li>
+            </ul>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python" id="code-block">from langgraph.graph import START, StateGraph, END
+from IPython.display import Image, display
+                    
+# Initialize the graph
+builder = StateGraph(MessagesState)
+                    
+# Define nodes (agents)
+builder.add_node("Title Generator", title_generator_agent)
+builder.add_node("Blog Generator", blog_generator_agent)
+                    
+# Define edges (flow)
+builder.add_edge(START, "Title Generator")
+builder.add_edge("Title Generator", "Blog Generator")
+builder.add_edge("Blog Generator", END)
+                    
+# Compile the graph
+graph = builder.compile()
+                    
+# Visualizing the workflow
+display(Image(graph.get_graph().draw_mermaid_png()))</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>Conclusion</h2>
+            <p>We successfully built a blog post generator using LangGraph and LangChain. This modular design allows us to extend the system by adding more content refinement steps or integrating with external knowledge sources. Now - </p>
+            <ul>
+                <li>Enhance the title generation logic with better prompt tuning.</li>
+                <li>Expand the blog generator to include structured sections (Introduction, Body, Conclusion).</li>
+                <li>Implement SEO optimization for better readability.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer">
+        <p>© 2025 | Written by decodeai.ca</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function copyCode(button) {
+    // Find the nearest <code> element inside the same .code div
+    const codeBlock = button.nextElementSibling.querySelector("code");
+    if (codeBlock) {
+        const textToCopy = codeBlock.innerText;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            button.textContent = "✔ Copied";
+            setTimeout(() => { button.textContent = "⧉ Copy"; }, 2000);
+        }).catch(err => console.error("Failed to copy text:", err));
+    }
+}
+    </script>
+</body>
+</html>
