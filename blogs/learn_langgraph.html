@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning LangGraph: A Structured Approach</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/monokai.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+            scroll-behavior: smooth;
+        }
+        .hero {
+            background: linear-gradient(135deg, #333, #1a1a1a);
+            padding: 50px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .hero::after {
+            content: "";
+            display: block;
+            height: 4px;
+            width: 100%;
+            background: linear-gradient(90deg, #8a2be2, #ff00ff);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .hero p {
+            font-size: 1.1rem;
+        }
+        .code {
+            background-color: #2c2f33;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #444;
+            color: #f5f5f5;
+            border: none;
+            padding: 3px 7px;
+            font-size: 10px; 
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .copy-btn:hover {
+            background-color: #666;
+        }
+        .container {
+            max-width: 1000px;
+            padding: 50px 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            background-color: #1a1a1a;
+        }
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            background-color: #222;
+            border-top: 2px solid #444;
+            color: #f5f5f5;
+            box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .navbar {
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        .content {
+            padding-top: 100px;
+        }
+        h2, h3, h4 {
+            color: #bbb;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #bbb;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #ddd;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark px-3">
+        <a class="navbar-brand" href="#">
+            <img src="/images/decodeai_logo.png" alt="Company Logo" width="130" height="30">
+        </a>
+        <a href="/index.html" class="btn btn-outline-light">Home</a>
+    </nav>
+
+    <div class="content">
+        <div class="hero">
+            <h1>Learning LangGraph: A Structured Approach</h1>
+            <p class="lead">LangGraph enables you to define stateful message passing, integrate tool calls, and handle conditional logic efficiently.</p>
+        </div>
+
+        <div class="container">
+            <p class="lead">In this blog post, we will walk through a step-by-step guide to using LangGraph, covering key concepts such as defining tools, conditional edges, and compiling a reactive graph.</p>
+
+            <h2>1. Setting Up the Environment</h2>
+            <p class="lead">To get started, we first need to set up API keys and load necessary libraries.</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python" id="code-block">import os
+from dotenv import load_dotenv
+load_dotenv()
+os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")</code></pre></div>
+            <p class="lead">This code loads environment variables from a .env file and sets them as system variables. These keys will be used to authenticate requests when calling external APIs such as OpenAI.</p>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>2. Defining Tools</h2>
+            <p class="lead">In LangGraph, tools represent functions that the assistant can call dynamically. Here, we define three basic arithmetic operations:</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python" id="code-block">def multiply(a: int, b: int) -> int:
+    """Multiply two integers."""
+    return a * b
+                
+# This will be a tool
+def add(a: int, b: int) -> int:
+    """Add two integers."""
+    return a + b
+                
+def divide(a: int, b: int) -> float:
+    """Divide two integers."""
+    return a / b</code></pre></div>
+    <ul>
+        <li>multiply(): Multiplies two integers.</li>
+        <li>add(): Adds two integers.</li>
+        <li>divide(): Divides two integers and returns a float.</li>
+    </ul>
+            <p class="lead">These functions act as independent tools that can be called when required. We then register these functions as tools:</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python" id="code-block">tools = [add, multiply, divide]</code></pre></div>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>3. Initializing the Language Model with Tools</h2>
+            <p class="lead">To integrate our tools with an LLM, we use the ChatOpenAI model:</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python" id="code-block">from langchain_openai import ChatOpenAI
+
+llm = ChatOpenAI(model="gpt-4o")
+                    
+llm_with_tools = llm.bind_tools(tools, parallel_tool_calls=False)</code></pre></div>
+    <ul>
+        <li>ChatOpenAI(model="gpt-4o"): Initializes a GPT-4 model from OpenAI.</li>
+        <li>.bind_tools(tools, parallel_tool_calls=False): Associates the defined tools with the model, allowing the assistant to invoke them dynamically.</li>
+    </ul>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>4. Defining Message States</h2>
+            <p class="lead">We now create a stateful message handler using LangGraph’s MessagesState:</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python" id="code-block">from langgraph.graph import MessagesState
+from typing_extensions import TypedDict
+from langchain_core.messages import AnyMessage, HumanMessage, SystemMessage
+                    
+# Define a system message
+sys_msg = SystemMessage(content="You are a helpful assistant tasked with performing arithmetic on a set of inputs.")
+                    
+# Function for the assistant node
+def assistant(state: MessagesState):
+    return {"messages": [llm_with_tools.invoke([sys_msg] + state["messages"])]}
+                    
+from typing import Annotated
+from langgraph.graph.message import add_messages
+                    
+class MessagesState(TypedDict):
+    messages: Annotated[list[AnyMessage], add_messages]</code></pre></div>
+    <ul>
+        <li>sys_msg: A predefined system message that guides the assistant’s behavior.</li>
+        <li>assistant(): A function that processes incoming messages by invoking the LLM with available tools.</li>
+        <li>MessagesState: Defines the structure of the state, storing the conversation messages.</li>
+    </ul>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>5. Building the Graph</h2>
+            <p class="lead">Using StateGraph, we define nodes and edges to structure the workflow:</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python" id="code-block">from langgraph.graph import START, StateGraph
+from langgraph.prebuilt import tools_condition, ToolNode
+from IPython.display import Image, display
+                    
+builder = StateGraph(MessagesState)
+                    
+# Define nodes
+builder.add_node("assistant", assistant)
+builder.add_node("tools", ToolNode(tools))
+                    
+# Define edges
+builder.add_edge(START, "assistant")
+                    
+# Define conditional edges
+builder.add_conditional_edges(
+    "assistant",
+    tools_condition,  # Routes to tools if a tool call is needed, else ends
+)
+                    
+builder.add_edge("tools", "assistant")
+                    
+# Compile the graph
+react_graph = builder.compile()</code></pre></div>
+    <ul>
+        <li>StateGraph(MessagesState): Creates a new state graph using the MessagesState structure.</li>
+        <li>builder.add_node(): Defines the nodes in the graph.</li>
+        <li>builder.add_edge(): Connects the nodes to define execution flow.</li>
+        <li>tools_condition: A prebuilt condition that routes execution based on whether a tool needs to be called.</li>
+    </ul>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>6. Visualizing the Graph</h2>
+            <p class="lead">LangGraph provides built-in visualization for better understanding:</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python" id="code-block">display(Image(react_graph.get_graph().draw_mermaid_png()))</code></pre></div>
+        <p>This command generates a diagram that visually represents the structure of the graph, showing how nodes and edges interact.<p>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>7. Running the Assistant</h2>
+            <p class="lead">Finally, we can test our assistant by sending a message:</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python" id="code-block">messages = [HumanMessage(content="Add 4 and 2, then multiply the result by 8, and add 2 to the final answer.")]
+
+messages = react_graph.invoke({"messages": messages})
+                    
+for m in messages['messages']:
+    m.pretty_print()</code></pre></div>
+    <ul>
+        <li>A HumanMessage containing an arithmetic request is created.</li>
+        <li>The message is processed through the graph, utilizing tools as needed.</li>
+        <li>The final output is printed in a readable format.</li>
+    </ul>
+            <div style="margin-top: 40px;"></div>
+
+            <h2>Conclusion</h2>
+            <p>In this blog post, we covered the fundamentals of LangGraph, from setting up API keys to defining tools, integrating an LLM, structuring stateful message handling, building and visualizing a graph, and running an assistant. LangGraph is a powerful framework that allows structured and flexible AI-driven workflows, making it an excellent choice for building intelligent agents. Now Try extending this example by:</p>
+            <ul>
+                <li>Adding more complex tools.</li>
+                <li>Refining conditions for tool invocation.</li>
+                <li>Integrating additional workflows for different problem-solving scenarios.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer">
+        <p>© 2025 | Written by decodeai.ca</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function copyCode(button) {
+    // Find the nearest <code> element inside the same .code div
+    const codeBlock = button.nextElementSibling.querySelector("code");
+    if (codeBlock) {
+        const textToCopy = codeBlock.innerText;
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            button.textContent = "✔ Copied";
+            setTimeout(() => { button.textContent = "⧉ Copy"; }, 2000);
+        }).catch(err => console.error("Failed to copy text:", err));
+    }
+}
+    </script>
+</body>
+</html>
