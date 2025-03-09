@@ -129,7 +129,7 @@
             resultDiv.style.opacity = "0";
             loader.style.display = "block";
 
-            const response = await fetch("https://your-api-server.com/generate-blog", {
+            const response = await fetch("https://w0sled9c2e.execute-api.us-east-2.amazonaws.com/de/generate-blog", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ prompt: inputText })
