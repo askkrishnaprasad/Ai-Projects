@@ -1,0 +1,262 @@
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering Agentic RAG: Code Snippet Guide</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/monokai.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+            scroll-behavior: smooth;
+        }
+        .hero {
+            background: linear-gradient(135deg, #333, #1a1a1a);
+            padding: 50px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .hero::after {
+            content: "";
+            display: block;
+            height: 4px;
+            width: 100%;
+            background: linear-gradient(90deg, #8a2be2, #ff00ff);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
+        }
+        .hero h2 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .code {
+            background-color: #2c2f33;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #444;
+            color: #f5f5f5;
+            border: none;
+            padding: 3px 7px;
+            font-size: 10px; 
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .copy-btn:hover {
+            background-color: #666;
+        }
+        .container {
+            max-width: 1000px;
+            padding: 50px 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            background-color: #1a1a1a;
+        }
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            background-color: #222;
+            border-top: 2px solid #444;
+            color: #f5f5f5;
+            box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .navbar {
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        .content {
+            padding-top: 100px;
+        }
+        h2, h3, h4 {
+            color: #bbb;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #bbb;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #ddd;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark px-3">
+        <a class="navbar-brand" href="#">
+            <img src="/images/decodeai_logo.png" alt="Company Logo" width="130" height="30">
+        </a>
+        <a href="/index.html" class="btn btn-outline-light">Home</a>
+    </nav>
+
+    <div class="content">
+        <div class="hero">
+            <h2>Mastering Agentic RAG: Code Snippet Guide</h2>
+            <p class="lead"></p>
+        </div>
+
+        <div class="container">
+            <h1>Mastering Agentic RAG: Code Snippet Guide</h1>
+
+            <p>In the ever-evolving landscape of artificial intelligence and machine learning, data retrieval and processing mechanisms continue to grow in sophistication. One such approach is known as Retrieval-Augmented Generation (RAG). It skillfully merges the prowess of generative models with the precision of information retrieval systems. In this blog post, we will break down a specific code snippet that implements an Agentic RAG approach using Python and several powerful libraries.</p>
+
+            <h2>Introduction</h2>
+            <p>The core idea behind RAG is to utilize external knowledge sources to enhance the output of generative models. This results in improved accuracy and relevance in responses, especially when dealing with large datasets or multiple information sources. In this blog, we will dissect a code snippet utilizing <code>langchain</code> libraries, focusing on the initialization of APIs, document loading, processing, and querying.</p>
+
+            <h2>Setting Up Environment Variables</h2>
+            <p>Before diving into the code, it's essential to load environment variables securely. The following import statements help load tokens for accessing APIs without exposing sensitive information in the code.</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python">import os
+from dotenv import load_dotenv
+load_dotenv()  # Loading all the environment variables
+os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+                </code></pre>
+            </div>
+            <p><strong>dotenv</strong>: This library provides an easy way to load environment variables from a <code>.env</code> file into your program.</p>
+            <p><strong>os</strong>: A built-in module that enables interaction with the operating system, allowing the assignment of environment variables.</p>
+
+            <h2>Document Loading</h2>
+            <p>The next crucial step involves loading documents from the web. This is efficiently handled using <code>WebBaseLoader</code>, which retrieves and structures content from specified URLs.</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python">from langchain_community.document_loaders import WebBaseLoader
+
+urls = [
+    "https://langchain-ai.github.io/langgraph/tutorials/introduction/",
+    "https://langchain-ai.github.io/langgraph/tutorials/workflows/",
+    "https://langchain-ai.github.io/langgraph/how-tos/map-reduce/"
+]
+docs = [WebBaseLoader(url).load() for url in urls]
+                </code></pre>
+            </div>
+
+            <h3>Explanation:</h3>
+            <ol>
+                <li><strong>URL List</strong>: A list containing the URLs where relevant content is hosted.</li>
+                <li><strong>WebBaseLoader</strong>: This utility loads the content from each URL, allowing for dynamic fetching of information.</li>
+            </ol>
+
+            <h3>Combining Documents</h3>
+            <p>After loading the documents, it's essential to flatten the nested structure returned by the loader, resulting in a unified list of documents:</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python">docs_list = [item for sublist in docs for item in sublist]
+                </code></pre>
+            </div>
+            <p>Here, a list comprehension is used to create a single list (<code>docs_list</code>) from potentially multiple lists returned from each URL.</p>
+
+            <h2>Document Splitting</h2>
+            <p>For optimal integration with machine learning models, documents often need to be split into manageable chunks. We use <code>RecursiveCharacterTextSplitter</code> for this purpose.</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python">from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000, chunk_overlap=100
+)
+
+doc_splits = text_splitter.split_documents(docs_list)
+                </code></pre>
+            </div>
+
+            <h3>Key Points:</h3>
+            <ul>
+                <li><strong>Chunking</strong>: The <code>chunk_size</code> parameter specifies the maximum size of each text chunk, while <code>chunk_overlap</code> defines how much overlap to allow between chunks, ensuring context is preserved.</li>
+            </ul>
+
+            <h2>Creating a Vector Store</h2>
+            <p>With the documents processed and split, the next logical step is storing these text chunks in a vector database. We utilize the FAISS vector store for effective similarity searching.</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python">from langchain_community.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings
+
+# Adding all these text to vectordb
+vectorstore = FAISS.from_documents(
+    documents=doc_splits,
+    embedding=OpenAIEmbeddings()
+)
+                </code></pre>
+            </div>
+
+            <h3>Explanation:</h3>
+            <ol>
+                <li><strong>FAISS</strong>: This is a library developed by Facebook for efficient similarity search and clustering of dense vectors, which makes it a great choice for handling embeddings.</li>
+                <li><strong>OpenAIEmbeddings</strong>: This utility converts text into numerical vector representations needed for the FAISS index.</li>
+            </ol>
+
+            <h2>Retrieving Information</h2>
+            <p>Finally, we create a retriever to query the vector store and fetch relevant data based on user input queries.</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="language-python">retriever = vectorstore.as_retriever()
+retriever.invoke("what is langgraph")
+                </code></pre>
+            </div>
+
+            <h3>Workflow:</h3>
+            <ol>
+                <li><strong>Retrieval</strong>: The <code>as_retriever()</code> method transforms the vector store into a retriever object.</li>
+                <li><strong>Query Execution</strong>: The <code>invoke()</code> method allows executing a natural language query. In our case, we are querying "what is langgraph".</li>
+            </ol>
+
+            <h2>Conclusion</h2>
+            <p>In this blog post, we explored a code snippet to implement an Agentic Retrieval-Augmented Generation system using popular libraries such as <code>langchain</code> and <code>FAISS</code>. By initially setting up secure API access, loading and splitting documents, and utilizing a vector store, one can effectively augment generative AI capabilities with real-time data retrieval.</p>
+            
+            <p>As data continues to grow, the ability to efficiently search and utilize this data becomes increasingly vital. Mastering these tools and techniques can significantly enhance the performance and relevance of AI applications across various domains.</p> 
+
+            <p>Feel free to experiment with the provided code and adapt it to your use case, and unleash the full potential of Retrieval-Augmented Generation!</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 | Written by decodeai.ca</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.nextElementSibling.querySelector("code");
+            if (codeBlock) {
+                const textToCopy = codeBlock.innerText;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    button.textContent = "✔ Copied";
+                    setTimeout(() => { button.textContent = "⧉ Copy"; }, 2000);
+                }).catch(err => console.error("Failed to copy text:", err));
+            }
+        }
+    </script>
+</body>
+</html>
