@@ -1,0 +1,345 @@
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering LangGraph: AI Workflows Explained</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/monokai.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+            scroll-behavior: smooth;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #333, #1a1a1a);
+            padding: 50px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero::after {
+            content: "";
+            display: block;
+            height: 4px;
+            width: 100%;
+            background: linear-gradient(90deg, #8a2be2, #ff00ff);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+        }
+
+        .code {
+            background-color: #2c2f33;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #444;
+            color: #f5f5f5;
+            border: none;
+            padding: 3px 7px;
+            font-size: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background-color: #666;
+        }
+
+        .container {
+            max-width: 1000px;
+            padding: 50px 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            background-color: #1a1a1a;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            background-color: #222;
+            border-top: 2px solid #444;
+            color: #f5f5f5;
+            box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar {
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .content {
+            padding-top: 100px;
+        }
+
+        h2, h3, h4 {
+            color: #bbb;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        a {
+            color: #bbb;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #ddd;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark px-3">
+        <a class="navbar-brand" href="#">
+            <img src="/images/decodeai_logo.png" alt="Company Logo" width="130" height="30">
+        </a>
+        <a href="/index.html" class="btn btn-outline-light">Home</a>
+    </nav>
+
+    <div class="content">
+        <div class="hero">
+            <h2>Mastering LangGraph: AI Workflows Explained</h2>
+            <p class="lead">Explore the integration of AI workflows with LangGraph.</p>
+        </div>
+
+        <div class="container">
+            <h1>Mastering LangGraph: AI Workflows Explained</h1>
+
+            <p>In an era where artificial intelligence (AI) is becoming increasingly integral to our daily interactions and business processes, developing streamlined workflows for AI applications is crucial. This is where LangGraph comes into play. LangGraph is a powerful framework that facilitates the creation and management of AI-driven workflows, encapsulating complex logic in a user-friendly manner.</p>
+            <p>In this tutorial, we will break down three code examples that demonstrate how to define and implement workflows using LangGraph. We will explore the fundamentals of setting up a simple workflow, maintaining state across queries, and managing conditional logic in advanced applications. Through this detailed analysis, you'll gain insights into both the LangGraph framework and some foundational concepts in AI chatbot development.</p>
+
+            <h2>What Is LangGraph?</h2>
+            <p>LangGraph is a library that allows developers to create workflows for interacting with language models, such as OpenAI's GPT. It combines traditional programming paradigms with AI to build robust applications that navigate complex user interactions seamlessly.</p>
+
+            <h2>Key Concepts Before We Dive In</h2>
+            <ul>
+                <li><strong>State Management</strong>: In the context of AI workflows, state refers to the information maintained throughout a user's interaction. This could include query history, user preferences, or session context.</li>
+                <li><strong>Conditional Logic</strong>: This is the capability to direct the flow of execution based on certain conditions. For instance, deciding which part of the workflow to execute based on a user's input.</li>
+                <li><strong>Graph Representation</strong>: Workflows can be visualized as graphs where nodes represent functions or processes, and edges represent the flow of execution and dependencies between these nodes.</li>
+            </ul>
+            <p>Let’s examine the provided code examples step-by-step.</p>
+
+            <h2>1. Simple LangGraph</h2>
+            <h3>Code Snippet:</h3>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="python">
+import langgraph
+from langchain.chat_models import ChatOpenAI
+from langchain.schema import HumanMessage
+
+# Initialize the LLM (Make sure to set your OpenAI API Key as an environment variable)
+llm = ChatOpenAI(model="gpt-3.5-turbo")
+
+# Define a function that processes user input using the LLM
+def process_query(state):
+    query = state["query"]
+    response = llm([HumanMessage(content=query)])
+    return {"response": response.content}
+
+# Create a simple workflow graph
+workflow = langgraph.Graph()
+
+# Add nodes (steps)
+workflow.add_node("Process Query", process_query)
+
+# Define the edges (order of execution)
+workflow.set_entry_point("Process Query")
+
+# Compile the workflow
+app = workflow.compile()
+
+# Run the workflow
+output = app.invoke({"query": "What is LangGraph?"})
+print(output)
+                </code></pre>
+            </div>
+            <h3>Breakdown:</h3>
+            <ul>
+                <li><strong>Imports</strong>: We begin by importing the required modules from LangGraph and LangChain. LangChain is essential for communicating with the language model (LLM).</li>
+                <li><strong>LLM Initialization</strong>: Here, we instantiate the LLM, setting the model to "gpt-3.5-turbo". You need to ensure that your OpenAI API key is set as an environment variable to authenticate your requests.</li>
+                <li><strong>Function Definition</strong>: This function retrieves the <code>query</code> from the state, sends it to the LLM, and then constructs a response by accessing the content of the LLM's output.</li>
+                <li><strong>Workflow Graph Setup</strong>: A graph is created and a node named "Process Query" is added that links to the <code>process_query</code> function. The <code>set_entry_point</code> method defines where the workflow starts; in this case, it starts processing at the "Process Query" node.</li>
+                <li><strong>Running the Workflow</strong>: The <code>app.invoke()</code> method executes the workflow with the given input. The result is printed, displaying the AI's response to the user query.</li>
+            </ul>
+
+            <h2>2. Stateful Workflow</h2>
+            <h3>Code Snippet:</h3>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="python">
+from langgraph.graph import StateGraph
+
+# Define state schema
+class QueryState(langgraph.State):
+    query: str
+    history: list = []
+
+# Update process function to maintain history
+def process_query(state: QueryState):
+    query = state.query
+    history = state.history
+    
+    response = llm([HumanMessage(content=query)]).content
+    history.append({"query": query, "response": response})
+    
+    return QueryState(query=query, history=history)
+
+# Create a workflow with state
+workflow = StateGraph(QueryState)
+workflow.add_node("Process Query", process_query)
+workflow.set_entry_point("Process Query")
+
+app = workflow.compile()
+
+# Run the workflow with history tracking
+output = app.invoke(QueryState(query="Tell me about LangChain"))
+print(output.history)
+                </code></pre>
+            </div>
+            <h3>Breakdown:</h3>
+            <ul>
+                <li><strong>State Schema Definition</strong>: This defines a data structure to maintain the query and a history of past queries and responses.</li>
+                <li><strong>Function Modification</strong>: The <code>process_query</code> function is adjusted to:
+                    <ul>
+                        <li>Retrieve <code>query</code> and <code>history</code> from the state.</li>
+                        <li>Append each query-response pair to <code>history</code> for tracking and context.</li>
+                    </ul>
+                </li>
+                <li><strong>State Graph</strong>: The <code>StateGraph</code> ensures that we can maintain and utilize state across function calls, enabling richer user interactions.</li>
+                <li><strong>Running the Workflow</strong>: The workflow is invoked with an instance of <code>QueryState</code>, capturing the user's query and providing an accessible history of interactions.</li>
+            </ul>
+
+            <h2>3. Advanced Workflow</h2>
+            <h3>Code Snippet:</h3>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="python">
+def check_topic(state):
+    """Decide if the question is about LangGraph or something else."""
+    if "LangGraph" in state["query"]:
+        return "LangGraph Node"
+    return "General Node"
+
+def handle_langgraph_query(state):
+    """Handles queries related to LangGraph."""
+    return {"response": "LangGraph is a framework for creating AI-powered workflows."}
+
+def handle_general_query(state):
+    """Handles all other queries using LLM."""
+    return {"response": llm([HumanMessage(content=state["query"])]).content}
+
+# Create the graph
+workflow = langgraph.Graph()
+
+# Add nodes
+workflow.add_node("Check Topic", check_topic)
+workflow.add_node("LangGraph Node", handle_langgraph_query)
+workflow.add_node("General Node", handle_general_query)
+
+# Define edges
+workflow.set_entry_point("Check Topic")
+workflow.add_conditional_edges(
+    "Check Topic",
+    check_topic,
+    {
+        "LangGraph Node": "LangGraph Node",
+        "General Node": "General Node"
+    }
+)
+
+app = workflow.compile()
+
+# Run the workflow
+output1 = app.invoke({"query": "Tell me about LangGraph"})
+output2 = app.invoke({"query": "What is Python?"})
+
+print("LangGraph Query Response:", output1)
+print("General Query Response:", output2)
+                </code></pre>
+            </div>
+            <h3>Breakdown:</h3>
+            <ul>
+                <li><strong>Conditional Logic</strong>: The <code>check_topic</code> function determines the type of query to direct it towards either the LangGraph-specific response or a general inquiry.</li>
+                <li><strong>Node Management</strong>: Three nodes are added:
+                    <ul>
+                        <li><strong>Check Topic</strong> which decides the branch.</li>
+                        <li><strong>LangGraph Node</strong> for specific responses about LangGraph.</li>
+                        <li><strong>General Node</strong> collaborating with the LLM for all other queries.</li>
+                    </ul>
+                </li>
+                <li><strong>Flow Control</strong>: The <code>add_conditional_edges</code> method ties the decision logic to the subsequent nodes, demonstrating how workflows can adapt dynamically based on user input.</li>
+                <li><strong>Executing the Workflow</strong>: Two different queries highlight how the system responds appropriately based on the context, returning tailored responses effectively.</li>
+            </ul>
+
+            <h2>Conclusion</h2>
+            <p>LangGraph abstracts much of the complexity involved in integrating AI capabilities into applications, allowing developers to focus on crafting engaging user experiences rather than wrestling with underlying technical details. This tutorial has walked you through building improving AI workflows from a basic setup to managing state and logical conditions effectively.</p>
+
+            <h2>Key Takeaways:</h2>
+            <ul>
+                <li><strong>Understand State Management</strong>: Know how to maintain user context to improve interactions.</li>
+                <li><strong>Embrace Conditional Logic</strong>: Use decision-making to tailor responses in AI applications.</li>
+                <li><strong>Leverage Graph Structures</strong>: Utilize graph representations to streamline complex functionalities within your applications.</li>
+            </ul>
+            <p>As you move forward, consider exploring more advanced topics such as integrating additional data sources and implementing error handling to further enhance your LangGraph applications. Stay curious, keep coding, and enjoy building powerful AI-driven workflows!</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 | Written by decodeai.ca</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.nextElementSibling.querySelector("code");
+            if (codeBlock) {
+                const textToCopy = codeBlock.innerText;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    button.textContent = "✔ Copied";
+                    setTimeout(() => { button.textContent = "⧉ Copy"; }, 2000);
+                }).catch(err => console.error("Failed to copy text:", err));
+            }
+        }
+    </script>
+</body>
+</html>
