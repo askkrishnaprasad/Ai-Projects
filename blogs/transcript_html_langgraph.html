@@ -1,0 +1,254 @@
+html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extract YouTube Transcripts & Generate HTML with Langgraph</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/monokai.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+            scroll-behavior: smooth;
+        }
+        .hero {
+            background: linear-gradient(135deg, #333, #1a1a1a);
+            padding: 50px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .hero::after {
+            content: "";
+            display: block;
+            height: 4px;
+            width: 100%;
+            background: linear-gradient(90deg, #8a2be2, #ff00ff);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .hero p {
+            font-size: 1.1rem;
+        }
+        .code {
+            background-color: #2c2f33;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #444;
+            color: #f5f5f5;
+            border: none;
+            padding: 3px 7px;
+            font-size: 10px; 
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        .copy-btn:hover {
+            background-color: #666;
+        }
+        .container {
+            max-width: 1000px;
+            padding: 50px 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            background-color: #1a1a1a;
+        }
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            background-color: #222;
+            border-top: 2px solid #444;
+            color: #f5f5f5;
+            box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .navbar {
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        .content {
+            padding-top: 100px;
+        }
+        h2, h3, h4 {
+            color: #bbb;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        a {
+            color: #bbb;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #ddd;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark px-3">
+        <a class="navbar-brand" href="#">
+            <img src="/images/decodeai_logo.png" alt="Company Logo" width="130" height="30">
+        </a>
+        <a href="/index.html" class="btn btn-outline-light">Home</a>
+    </nav>
+
+    <div class="content">
+        <div class="hero">
+            <h2>Extract YouTube Transcripts & Generate HTML with Langgraph</h2>
+            <p class="lead"></p>
+        </div>
+
+        <div class="container">
+            <h1>Extracting YouTube Transcripts and Generating HTML with Langgraph</h1>
+
+            <p>In the vast world of content available on YouTube, extracting transcripts can provide immense value. This information can be used for research, content creation, and accessibility improvements. In this blog post, we’ll explore how to extract YouTube transcripts programmatically and generate an HTML page displaying this transcript using Langgraph, a powerful tool for linking and organizing textual data.</p>
+
+            <h2>Table of Contents</h2>
+            <ul>
+                <li><a href="#introduction">Introduction to YouTube Transcripts</a></li>
+                <li><a href="#overview">Overview of Langgraph</a></li>
+                <li><a href="#setup">Setting Up the Environment</a></li>
+                <li><a href="#code-walkthrough">Code Walkthrough</a></li>
+                <li><a href="#best-practices">Best Practices</a></li>
+                <li><a href="#applications">Potential Applications</a></li>
+                <li><a href="#conclusion">Conclusion</a></li>
+                <li><a href="#key-takeaways">Key Takeaways</a></li>
+            </ul>
+
+            <h3 id="introduction">Introduction to YouTube Transcripts</h3>
+            <p>YouTube provides automatic captions for many of its videos, which can be extremely useful for viewers who prefer to read content. Transcripts serve as a written record of the spoken content in videos, making it easier to analyze and repurpose the information. By utilizing scripting skills, developers can automate the extraction and presentation of these transcripts.</p>
+
+            <h3 id="overview">Overview of Langgraph</h3>
+            <p>Langgraph is a tool that transforms natural language data into structured information, making it easier to visualize and interact with. It combines the power of AI and machine learning to process text data, providing a multitude of use cases from search engine optimization to product recommendation systems.</p>
+
+            <h3 id="setup">Setting Up the Environment</h3>
+            <p>Before we dive into the code, ensure you have the following packages installed in your Python environment:</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="bash">pip install youtube-transcript-api langgraph
+                </code></pre>
+            </div>
+            <p>This installs necessary libraries — <code>youtube-transcript-api</code> for fetching transcripts and <code>langgraph</code> for generating our HTML page.</p>
+
+            <h3 id="code-walkthrough">Code Walkthrough</h3>
+            <p>Now, let's analyze the code step-by-step:</p>
+
+            <h4>Step 1: Fetching the Transcript</h4>
+            <p>Here’s a sample code snippet for fetching the YouTube transcript.</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="python">from youtube_transcript_api import YouTubeTranscriptApi
+
+def fetch_transcript(video_id):
+    transcript = YouTubeTranscriptApi.get_transcript(video_id)
+    return transcript
+                </code></pre>
+            </div>
+            <h5>Line by Line Breakdown:</h5>
+            <ul>
+                <li><code>from youtube_transcript_api import YouTubeTranscriptApi</code>: This line imports the YouTubeTranscriptApi class from the <code>youtube_transcript_api</code> module which allows us to fetch video transcripts easily.</li>
+                <li><code>def fetch_transcript(video_id):</code>: This line defines a function named <code>fetch_transcript</code> that takes <code>video_id</code> as an input. The video ID is the unique identifier for YouTube videos.</li>
+                <li><code>transcript = YouTubeTranscriptApi.get_transcript(video_id)</code>: Here, we call the <code>get_transcript</code> method with the given video ID, which fetches the transcript data. This method communicates with YouTube's API internally to retrieve the transcript.</li>
+                <li><code>return transcript</code>: Finally, this line returns the fetched transcript, which is a list of dictionaries containing text and timing information.</li>
+            </ul>
+
+            <h4>Step 2: Generating HTML with Langgraph</h4>
+            <p>Once we have the transcript, the next step is to generate an HTML page with it. Here’s how we can accomplish this with Langgraph:</p>
+            <div class="code">
+                <button class="copy-btn" onclick="copyCode(this)">⧉ Copy</button>
+                <pre><code class="python">from langgraph import LangGraph
+
+def create_html(transcript):
+    documents = [(item['start'], item['text']) for item in transcript]
+    lg = LangGraph(documents)
+    html_output = lg.to_html()
+    return html_output
+                </code></pre>
+            </div>
+            <h5>Line by Line Breakdown:</h5>
+            <ul>
+                <li><code>from langgraph import LangGraph</code>: This line imports the <code>LangGraph</code> class from the <code>langgraph</code> module.</li>
+                <li><code>def create_html(transcript):</code>: We define a function called <code>create_html</code> which accepts the fetched <code>transcript</code> as a parameter.</li>
+                <li><code>documents = [(item['start'], item['text']) for item in transcript]</code>: This line constructs a list of tuples where each tuple consists of the start time and corresponding text from the transcript. List comprehensions are a concise way to create lists in Python.</li>
+                <li><code>lg = LangGraph(documents)</code>: Here, we initialize an instance of <code>LangGraph</code> with our document list, enabling it to process the data.</li>
+                <li><code>html_output = lg.to_html()</code>: This line converts the processed transcript into an HTML format, making it ready to be displayed in a web browser.</li>
+                <li><code>return html_output</code>: Finally, we return the HTML output.</li>
+            </ul>
+
+            <h3 id="best-practices">Best Practices</h3>
+            <ul>
+                <li><strong>Error Handling</strong>: Always implement error handling while fetching data from APIs to manage scenarios like missing transcripts or invalid video IDs.</li>
+                <li><strong>User Experience</strong>: Enhance the generated HTML output with CSS styles for improved readability and accessibility.</li>
+                <li><strong>Testing</strong>: Test your functions with a variety of video IDs to ensure robustness and handle edge cases accordingly.</li>
+            </ul>
+
+            <h3 id="applications">Potential Applications</h3>
+            <ul>
+                <li><strong>Content Creators</strong>: Enable transcript extraction to enhance SEO or repurpose content.</li>
+                <li><strong>Researchers</strong>: Use transcripts for analysis of spoken content in fields like linguistics or media studies.</li>
+                <li><strong>Accessibility</strong>: Improve accessibility options for hearing-impaired users by providing better transcript displays.</li>
+            </ul>
+
+            <h3 id="conclusion">Conclusion</h3>
+            <p>Extracting YouTube transcripts and converting them into HTML using Langgraph is a straightforward yet powerful task. This process not only simplifies access to video content but also paves the way for creating better user experiences through organized, readable transcripts. Whether you are a developer looking to enhance your web applications with AI capabilities or simply an enthusiast eager to explore the APIs, this guide serves as a practical starting point.</p>
+
+            <h3 id="key-takeaways">Key Takeaways</h3>
+            <ul>
+                <li>You can automate the fetching of YouTube transcripts using <code>youtube-transcript-api</code>.</li>
+                <li>Langgraph is a useful tool for converting text data into structured HTML format.</li>
+                <li>Following best practices is essential for building robust applications.</li>
+            </ul>
+
+            <p>By mastering these skills, you can unlock new possibilities in text processing and enrich the way we consume video content. Happy coding!</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 | Written by decodeai.ca</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.nextElementSibling.querySelector("code");
+            if (codeBlock) {
+                const textToCopy = codeBlock.innerText;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    button.textContent = "✔ Copied";
+                    setTimeout(() => { button.textContent = "⧉ Copy"; }, 2000);
+                }).catch(err => console.error("Failed to copy text:", err));
+            }
+        }
+    </script>
+</body>
+</html>
